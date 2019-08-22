@@ -30,6 +30,9 @@
 @property (nonatomic, strong) NSMutableArray *ticksArray;
 @property (nonatomic, strong) NSMutableArray *accountsArray;
 
+@property (nonatomic, strong) UILabel *stautsLabel;
+@property (nonatomic, strong) UIView *topLeftView;
+
 @end
 
 @implementation ViewController
@@ -46,13 +49,22 @@
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
     
+    _topLeftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120, 44)];
+    _stautsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 120, 44)];
+    _stautsLabel.textColor = UIColor.whiteColor;
+    _stautsLabel.font = [UIFont systemFontOfSize:14];
+    _stautsLabel.text = @"未连接";
+    [_topLeftView addSubview:_stautsLabel];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_topLeftView];
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_setting"]
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(setHosturl)];
     self.navigationItem.rightBarButtonItem.tintColor = UIColor.whiteColor;
     
-    _host = @"192.168.1.223:8089";
+    _host = [[NSUserDefaults standardUserDefaults] stringForKey:CURRENT_HOST];
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -99,9 +111,15 @@
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *url = alert.textFields.firstObject.text;
+        NSString *placeHoldder = alert.textFields.firstObject.placeholder;
         [self clearCacheData];
         [self.socket disconnect];
-        self.host = url;
+        if ([url isEqualToString:@""]) {
+            self.host = placeHoldder;
+        } else {
+            self.host = url;
+        }
+        
         [[NSUserDefaults standardUserDefaults] setValue:self.host forKey:CURRENT_HOST];
         [[NSUserDefaults standardUserDefaults] synchronize];
         [self initSocket];
@@ -119,6 +137,7 @@
 
 - (void)initSocket
 {
+    _stautsLabel.text = @"连接中...";
     self.socket = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/echo", _host]] protocols:nil];
     self.socket.delegate = self;
     [self.socket connect];
@@ -151,11 +170,19 @@
 - (CGSize)calHeightWith:(TradeInfoModel *)info {
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        CGFloat height = 168 + 25 + 10 + 50;
+        CGFloat height = 168 + 25 + 10 + 40;
         height += info.orders.count * 18;
-        return CGSizeMake(WIN_WIDTH, height);
+        UIInterfaceOrientation status=[UIApplication sharedApplication].statusBarOrientation;
+        CGFloat width = 0;
+        if (status == UIInterfaceOrientationPortrait || status == UIInterfaceOrientationPortraitUpsideDown) {
+            width = WIN_WIDTH;
+        } else {
+            width = 375;
+        }
+        
+        return CGSizeMake(width, height);
     }else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        CGFloat height = 208 + 33 + 10 + 50;
+        CGFloat height = 208 + 33 + 10 + 40;
         height += info.orders.count * 18;
         return CGSizeMake(375, height);
     }
@@ -165,23 +192,26 @@
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        return UIEdgeInsetsMake(10, 0, 0, 0);;
+        return UIEdgeInsetsMake(0, 0, 10, 0);;
     } else {
-        return UIEdgeInsetsMake(20, 20, 0, 0);
+        return UIEdgeInsetsMake(0, 20, 20, 0);
     }
 }
 
 #pragma mark - WebsocketDelegate
 - (void)websocketDidConnect:(JFRWebSocket*)socket {
     NSLog(@"websocket is connected");
+    _stautsLabel.text = @"已连接";
 }
 
 - (void)websocketDidDisconnect:(JFRWebSocket*)socket error:(NSError*)error {
     NSLog(@"websocket is disconnected: %@", [error localizedDescription]);
-    [self.socket connect];
+//    [self.socket connect];
+    _stautsLabel.text = @"已断开";
 }
 
 - (void)websocket:(JFRWebSocket*)socket didReceiveMessage:(NSString*)string {
+    _stautsLabel.text = @"已连接";
     if ([string isEqualToString:@""] || [string isKindOfClass:[NSNull class]]){
         return;
     }

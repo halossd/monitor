@@ -47,8 +47,8 @@
         .topSpaceToView(self, 0)
         .heightIs(13);
         
-        NSString *str1 = [NSString stringWithFormat:@"%@,",data[@"symbol"]];
-        NSString *str2 = [NSString stringWithFormat:@" %@ %@", data[@"type"], data[@"lots"]];
+        NSString *str1 = [NSString stringWithFormat:@"%@ ",data[@"symbol"]];
+        NSString *str2 = [NSString stringWithFormat:@" %@  %@", data[@"type"], data[@"lots"]];
         NSString *str3 = [NSString stringWithFormat:@"%@%@", str1, str2];
         
         NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:str3];

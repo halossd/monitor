@@ -13,7 +13,7 @@
 #import "LYTradeInfo.h"
 
 #define WIN_WIDTH  [[UIScreen mainScreen] bounds].size.width
-#define C7 [UIColor colorWithRed:194/255.f green:192/255.f blue:198/255.f alpha:1]
+#define C7 [UIColor colorWithRed:110/255.f green:110/255.f blue:110/255.f alpha:1]
 #define C2 UIColor.whiteColor
 #define kBlue [UIColor colorWithRed:44/255.f green:118/255.f blue:244/255.f alpha:1]
 #define kRed [UIColor colorWithRed:255/255.f green:55/255.f blue:55/255.f alpha:1]
@@ -58,12 +58,13 @@
             _w = WIN_WIDTH - 30;
             
             _bodyHeight = 13;
-            
             bodyFont = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+            hederFont = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
         }else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             _w = 375 - 30;
             _bodyHeight = 18;
             bodyFont = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+            hederFont = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
         }
         self.contentView.layer.masksToBounds = YES;
         self.contentView.layer.cornerRadius = 10;
@@ -72,7 +73,7 @@
         
         _topLabel = [[UILabel alloc] init];
         _topLabel.textColor = UIColor.whiteColor;
-        _topLabel.font = bodyFont;
+        _topLabel.font = hederFont;
         _topLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:_topLabel];
         
@@ -84,8 +85,8 @@
         
         _vPlatformLabel = [[UILabel alloc] init];
         _vPlatformLabel.textColor = C2;
-        _vPrepaymentsLabel.textAlignment = NSTextAlignmentRight;
-        _vPlatformLabel.font = hederFont;
+        _vPlatformLabel.textAlignment = NSTextAlignmentRight;
+        _vPlatformLabel.font = bodyFont;
         [_vPlatformLabel setSingleLineAutoResizeWithMaxWidth:200];
         [self.contentView addSubview:_vPlatformLabel];
         
@@ -209,7 +210,7 @@
     .leftSpaceToView(self.contentView, 0)
     .rightSpaceToView(self.contentView, 0)
     .topSpaceToView(self.contentView, 0)
-    .heightIs(50);
+    .heightIs(40);
     
     self.vPlatformLabel.sd_layout
     .rightSpaceToView(self.contentView, left)
