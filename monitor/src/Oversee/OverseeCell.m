@@ -56,13 +56,12 @@
         UIFont *bodyFont;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
             _w = WIN_WIDTH - 30;
-            
-            _bodyHeight = 13;
+            _bodyHeight = 15;
             bodyFont = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
             hederFont = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
         }else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             _w = 375 - 30;
-            _bodyHeight = 18;
+            _bodyHeight = 20;
             bodyFont = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
             hederFont = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
         }
@@ -301,7 +300,7 @@
     
     self.tradeInfoWrap.sd_layout
     .leftSpaceToView(self.contentView, left)
-    .topSpaceToView(self.bottomLine, top)
+    .topSpaceToView(self.bottomLine, 12)
     .widthIs(_w);
     
 }
@@ -318,7 +317,7 @@
     [_tradeInfoWrap removeAllSubviews];
     double profit = data.equity.doubleValue - data.balance.doubleValue;
     _topLabel.text = [NSString stringWithFormat:@"%.2f", profit];
-    _topLabel.backgroundColor = profit > 0 ? kBlue : kRed;
+    _topLabel.backgroundColor = profit >= 0 ? kBlue : kRed;
     _tPlatformLabel.text = data.company;
     _vPlatformLabel.text = data.account;
     _vIpLabel.text = data.host;

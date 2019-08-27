@@ -41,28 +41,31 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-    self.view.backgroundColor = UIColor.whiteColor;
-    self.navigationItem.title = @"交易风控";
+    
+//    self.navigationItem.title = @"交易风控";
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(saveCache)
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
     
-    _topLeftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120, 44)];
-    _stautsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 120, 44)];
+//    _topLeftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120, 44)];
+    _stautsLabel = [[UILabel alloc] init];
     _stautsLabel.textColor = UIColor.whiteColor;
-    _stautsLabel.font = [UIFont systemFontOfSize:14];
-    _stautsLabel.text = @"未连接";
-    [_topLeftView addSubview:_stautsLabel];
+    _stautsLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+    _stautsLabel.text = @"交易风控";
+    self.navigationItem.titleView = _stautsLabel;
+    [_stautsLabel sizeToFit];
+//    [_topLeftView addSubview:_stautsLabel];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_topLeftView];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_topLeftView];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_setting"]
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(setHosturl)];
     self.navigationItem.rightBarButtonItem.tintColor = UIColor.whiteColor;
+    
     
     _host = [[NSUserDefaults standardUserDefaults] stringForKey:CURRENT_HOST];
     
@@ -114,6 +117,7 @@
         NSString *placeHoldder = alert.textFields.firstObject.placeholder;
         [self clearCacheData];
         [self.socket disconnect];
+        
         if ([url isEqualToString:@""]) {
             self.host = placeHoldder;
         } else {
@@ -137,7 +141,6 @@
 
 - (void)initSocket
 {
-    _stautsLabel.text = @"连接中...";
     self.socket = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/echo", _host]] protocols:nil];
     self.socket.delegate = self;
     [self.socket connect];
@@ -201,17 +204,19 @@
 #pragma mark - WebsocketDelegate
 - (void)websocketDidConnect:(JFRWebSocket*)socket {
     NSLog(@"websocket is connected");
-    _stautsLabel.text = @"已连接";
+//    _stautsLabel.text = @"已连接";
+    _stautsLabel.textColor = UIColor.whiteColor;
 }
 
 - (void)websocketDidDisconnect:(JFRWebSocket*)socket error:(NSError*)error {
     NSLog(@"websocket is disconnected: %@", [error localizedDescription]);
 //    [self.socket connect];
-    _stautsLabel.text = @"已断开";
+//    _stautsLabel.text = @"已断开";
+    _stautsLabel.textColor = UIColor.grayColor;
 }
 
 - (void)websocket:(JFRWebSocket*)socket didReceiveMessage:(NSString*)string {
-    _stautsLabel.text = @"已连接";
+    _stautsLabel.textColor = UIColor.whiteColor;
     if ([string isEqualToString:@""] || [string isKindOfClass:[NSNull class]]){
         return;
     }
