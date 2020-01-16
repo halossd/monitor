@@ -12,18 +12,18 @@
 #import "JFRWebSocket.h"
 #import "JFRSecurity.h"
 #import "Helper.h"
+#import "MOCollectionViewLayout.h"
 
 #define WIN_WIDTH  [[UIScreen mainScreen] bounds].size.width
 #define WIN_HEIGHT [[UIScreen mainScreen] bounds].size.height
 #define NOTIFICATION_WEBSOCKET_CONNECT @"NOTIFICATION_WEBSOCKET_CONNECT"
 #define CURRENT_HOST @"current_host"
 
-@interface ViewController ()<JFRWebSocketDelegate>
+@interface ViewController ()<JFRWebSocketDelegate, MOCollectionViewLayoutDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray<TradeInfoModel *> *tbDatas;
 @property(nonatomic, strong) JFRWebSocket *socket;
-
 @property (nonatomic, copy) NSString *host;
 
 //按账户分组
@@ -41,6 +41,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
 //    self.navigationItem.title = @"交易风控";
     
@@ -57,7 +58,6 @@
     self.navigationItem.titleView = _stautsLabel;
     [_stautsLabel sizeToFit];
 //    [_topLeftView addSubview:_stautsLabel];
-    
 //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_topLeftView];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_setting"]
@@ -70,12 +70,16 @@
     _host = [[NSUserDefaults standardUserDefaults] stringForKey:CURRENT_HOST];
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    _collectionView = [[UICollectionView alloc] initWithFrame:UIScreen.mainScreen.bounds collectionViewLayout:layout];
+    layout.estimatedItemSize = CGSizeMake(WIN_WIDTH, 500);
+    
+//    MOCollectionViewLayout *layout = [[MOCollectionViewLayout alloc] init];
+//    layout.delegate = self;
+    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, WIN_WIDTH, WIN_HEIGHT) collectionViewLayout:layout];
     _collectionView.backgroundColor = UIColor.blackColor;
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _collectionView.directionalLockEnabled = YES;
     [self.view addSubview:_collectionView];
     
     [_collectionView registerClass:[OverseeCell class] forCellWithReuseIdentifier:@"cell"];
@@ -115,6 +119,9 @@
     [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *url = alert.textFields.firstObject.text;
         NSString *placeHoldder = alert.textFields.firstObject.placeholder;
+        
+        url = [url stringByReplacingOccurrencesOfString:@"：" withString:@":"];
+        
         [self clearCacheData];
         [self.socket disconnect];
         
@@ -165,7 +172,7 @@
     return cell;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)itemSizeForIndexPath:(NSIndexPath *)indexPath
 {
     return [self calHeightWith:_tbDatas[indexPath.row]];
 }
@@ -190,15 +197,6 @@
         return CGSizeMake(375, height);
     }
     return CGSizeZero;
-}
-
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        return UIEdgeInsetsMake(0, 0, 10, 0);;
-    } else {
-        return UIEdgeInsetsMake(0, 20, 20, 0);
-    }
 }
 
 #pragma mark - WebsocketDelegate
@@ -236,8 +234,6 @@
                     NSIndexPath *idp = [NSIndexPath indexPathForRow:idx inSection:0];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.collectionView reloadItemsAtIndexPaths:@[idp]];
-//                        OverseeCell *cell = [self.collectionView cellForItemAtIndexPath:idp];
-//                        cell.data = d;
                     });
                 }
             } else {
