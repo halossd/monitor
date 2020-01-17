@@ -307,12 +307,6 @@
 
 - (void)setData:(TradeInfoModel *)data
 {
-//    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_topLabel.bounds
-//                                                   byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
-//    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-//    maskLayer.frame = _topLabel.bounds;
-//    maskLayer.path = maskPath.CGPath;
-//    _topLabel.layer.mask = maskLayer;
     
     [_tradeInfoWrap removeAllSubviews];
     double profit = data.equity.doubleValue - data.balance.doubleValue;
@@ -337,7 +331,7 @@
     }
     
     [infos enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        LYTradeInfo *view = [[LYTradeInfo alloc] initWithFrame:CGRectMake(0, 21 * idx, self.w, 13) data:obj redColor:NO];
+        LYTradeInfo *view = [[LYTradeInfo alloc] initWithFrame:CGRectMake(0, 21 * idx, self.width - 30, 13) data:obj redColor:NO];
         [self.tradeInfoWrap addSubview:view];
     }];
 }

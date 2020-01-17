@@ -19,7 +19,7 @@
 #define NOTIFICATION_WEBSOCKET_CONNECT @"NOTIFICATION_WEBSOCKET_CONNECT"
 #define CURRENT_HOST @"current_host"
 
-@interface ViewController ()<JFRWebSocketDelegate, MOCollectionViewLayoutDelegate>
+@interface ViewController ()<JFRWebSocketDelegate, MOCollectionViewLayoutDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray<TradeInfoModel *> *tbDatas;
@@ -32,7 +32,7 @@
 
 @property (nonatomic, strong) UILabel *stautsLabel;
 @property (nonatomic, strong) UIView *topLeftView;
-
+@property (nonatomic) __block BOOL canProcess;
 @end
 
 @implementation ViewController
@@ -41,13 +41,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-    self.automaticallyAdjustsScrollViewInsets = NO;
+//    self.automaticallyAdjustsScrollViewInsets = NO;
     
 //    self.navigationItem.title = @"交易风控";
-    
+    _canProcess = true;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(saveCache)
                                                  name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(initSocket)
+                                                 name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
     
 //    _topLeftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120, 44)];
@@ -64,16 +69,14 @@
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(setHosturl)];
+    
     self.navigationItem.rightBarButtonItem.tintColor = UIColor.whiteColor;
     
     
     _host = [[NSUserDefaults standardUserDefaults] stringForKey:CURRENT_HOST];
     
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.estimatedItemSize = CGSizeMake(WIN_WIDTH, 500);
-    
-//    MOCollectionViewLayout *layout = [[MOCollectionViewLayout alloc] init];
-//    layout.delegate = self;
+    MOCollectionViewLayout *layout = [[MOCollectionViewLayout alloc] init];
+    layout.delegate = self;
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, WIN_WIDTH, WIN_HEIGHT) collectionViewLayout:layout];
     _collectionView.backgroundColor = UIColor.blackColor;
     _collectionView.delegate = self;
@@ -119,6 +122,9 @@
     [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSString *url = alert.textFields.firstObject.text;
         NSString *placeHoldder = alert.textFields.firstObject.placeholder;
+        if (![url containsString:@":"]) {
+            url = [NSString stringWithFormat:@"%@:8089", url];
+        }
         
         url = [url stringByReplacingOccurrencesOfString:@"：" withString:@":"];
         
@@ -172,17 +178,36 @@
     return cell;
 }
 
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return [self calHeightWith:_tbDatas[indexPath.row]];
+//}
+
+- (NSUInteger)columnCountForLayout
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        UIInterfaceOrientation status=[UIApplication sharedApplication].statusBarOrientation;
+        if (status == UIInterfaceOrientationPortrait || status == UIInterfaceOrientationPortraitUpsideDown) {
+            return 1;
+        } else {
+            return 2;
+        }
+    } else {
+        return 3;
+    }
+    return 1;
+}
+
 - (CGSize)itemSizeForIndexPath:(NSIndexPath *)indexPath
 {
     return [self calHeightWith:_tbDatas[indexPath.row]];
 }
 
 - (CGSize)calHeightWith:(TradeInfoModel *)info {
-    
+    UIInterfaceOrientation status=[UIApplication sharedApplication].statusBarOrientation;
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         CGFloat height = 168 + 25 + 10 + 40;
-        height += info.orders.count * 18;
-        UIInterfaceOrientation status=[UIApplication sharedApplication].statusBarOrientation;
+        height += info.orders.count * 21;
         CGFloat width = 0;
         if (status == UIInterfaceOrientationPortrait || status == UIInterfaceOrientationPortraitUpsideDown) {
             width = WIN_WIDTH;
@@ -193,8 +218,14 @@
         return CGSizeMake(width, height);
     }else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         CGFloat height = 208 + 33 + 10 + 40;
-        height += info.orders.count * 18;
-        return CGSizeMake(375, height);
+        height += info.orders.count * 21;
+        CGFloat w = 0;
+        if (status == UIInterfaceOrientationPortrait || status == UIInterfaceOrientationPortraitUpsideDown) {
+            w = (WIN_WIDTH - 10) / 2;
+        } else {
+            w = (WIN_WIDTH - 20) / 3;
+        }
+        return CGSizeMake(w, height);
     }
     return CGSizeZero;
 }
@@ -218,9 +249,41 @@
     if ([string isEqualToString:@""] || [string isKindOfClass:[NSNull class]]){
         return;
     }
-    NSLog(@"Received string: %@", string);
+    //NSLog(@"Received string: %@", string);
     
-    NSDictionary *dic = [Helper dictionaryWithJsonString:string];
+    NSArray  *strs = [string componentsSeparatedByString:@"}\n{"];
+    
+    if (!_canProcess) {
+        NSLog(@"cancel process");
+        return;
+    }
+    
+    if (strs.count == 1) {
+        [self processResponsString:string];
+    } else {
+        for (int i=0; i < strs.count; i++) {
+            NSString *str = strs[i];
+            if (i == 0) {
+                str = [NSString stringWithFormat:@"%@}", str];
+            } else if (i == strs.count-1) {
+                str = [NSString stringWithFormat:@"{%@", str];
+            } else {
+                str = [NSString stringWithFormat:@"{%@}", str];
+            }
+            [self processResponsString:str];
+        }
+
+    }
+
+    
+}
+
+- (void)processResponsString:(NSString *)result
+{
+    NSDictionary *dic = [Helper dictionaryWithJsonString:result];
+    if(dic == nil) {
+        return;
+    }
     TradeInfoModel *d = [TradeInfoModel new];
     [d convert:dic];
     NSString *account = d.account;
@@ -232,6 +295,10 @@
                     [self.tbDatas replaceObjectAtIndex:idx withObject:d];
                     [self.ticksArray replaceObjectAtIndex:idx withObject:dic];
                     NSIndexPath *idp = [NSIndexPath indexPathForRow:idx inSection:0];
+                    _canProcess = false;
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        self.canProcess = true;
+                    });
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.collectionView reloadItemsAtIndexPaths:@[idp]];
                     });
@@ -251,7 +318,6 @@
         }
         [_collectionView reloadData];
     }
-    
 }
 
 - (void)clearCacheData
