@@ -59,7 +59,7 @@
         
         _tIpLabel = [[UILabel alloc] init];
         _tIpLabel.textColor = C2;
-        _tIpLabel.text = @"地址:";
+        _tIpLabel.text = @"客户:";
         _tIpLabel.font = [UIFont boldSystemFontOfSize:14];
         [_tIpLabel setSingleLineAutoResizeWithMaxWidth:200.f];
         [self.contentView addSubview:_tIpLabel];

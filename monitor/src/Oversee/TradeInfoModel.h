@@ -20,7 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *freeMargin;
 @property (nonatomic, copy) NSString *marginLevel;
 @property (nonatomic, copy) NSString *margin;
-@property (nonatomic, copy) NSString *profitRatio;
 @property (nonatomic) NSMutableArray *orders;
 
 - (void)convert:(NSDictionary*)dataSource;

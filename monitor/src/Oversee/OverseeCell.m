@@ -91,7 +91,7 @@
         
         _tIpLabel = [[UILabel alloc] init];
         _tIpLabel.textColor = C2;
-        _tIpLabel.text = @"地址:";
+        _tIpLabel.text = @"客户:";
         _tIpLabel.font = bodyFont;
         [_tIpLabel setSingleLineAutoResizeWithMaxWidth:200.f];
         [self.contentView addSubview:_tIpLabel];
@@ -178,14 +178,14 @@
         _tFloatProfitRateLabel.text = @"浮动盈亏比:";
         _tFloatProfitRateLabel.font = bodyFont;
         [_tFloatProfitRateLabel setSingleLineAutoResizeWithMaxWidth:150.f];
-        [self.contentView addSubview:_tFloatProfitRateLabel];
+//        [self.contentView addSubview:_tFloatProfitRateLabel];
         
         _vFloatProfitRateLabel = [[UILabel alloc] init];
         _vFloatProfitRateLabel.textColor = C2;
         _vFloatProfitRateLabel.textAlignment = NSTextAlignmentRight;
         _vFloatProfitRateLabel.font = bodyFont;
         [_vFloatProfitRateLabel setSingleLineAutoResizeWithMaxWidth:200];
-        [self.contentView addSubview:_vFloatProfitRateLabel];
+//        [self.contentView addSubview:_vFloatProfitRateLabel];
         
         _tradeInfoWrap = [[UIView alloc] init];
         [self.contentView addSubview:_tradeInfoWrap];
@@ -282,20 +282,20 @@
     .topEqualToView(self.tMarginRateLabel)
     .heightIs(_bodyHeight);
     
-    self.tFloatProfitRateLabel.sd_layout
-    .leftSpaceToView(self.contentView, left)
-    .topSpaceToView(self.tMarginRateLabel, top)
-    .heightIs(_bodyHeight);
-    
-    self.vFloatProfitRateLabel.sd_layout
-    .rightSpaceToView(self.contentView, left)
-    .topEqualToView(self.tFloatProfitRateLabel)
-    .heightIs(_bodyHeight);
+//    self.tFloatProfitRateLabel.sd_layout
+//    .leftSpaceToView(self.contentView, left)
+//    .topSpaceToView(self.tMarginRateLabel, top)
+//    .heightIs(_bodyHeight);
+//
+//    self.vFloatProfitRateLabel.sd_layout
+//    .rightSpaceToView(self.contentView, left)
+//    .topEqualToView(self.tFloatProfitRateLabel)
+//    .heightIs(_bodyHeight);
     
     self.bottomLine.sd_layout
     .leftSpaceToView(self.contentView, 0)
     .rightSpaceToView(self.contentView, 0)
-    .topSpaceToView(self.tFloatProfitRateLabel, 8)
+    .topSpaceToView(self.tMarginRateLabel, 8)
     .heightIs(0.5);
     
     self.tradeInfoWrap.sd_layout
@@ -320,7 +320,7 @@
     _vPrepaymentsLabel.text = data.margin;
     _vAvailablePrepaidLabel.text = data.freeMargin;
     _vMarginRateLabel.text = data.marginLevel;
-    _vFloatProfitRateLabel.text = data.profitRatio;
+//    _vFloatProfitRateLabel.text = data.profitRatio;
     NSArray *infos = data.orders;
     if (infos.count == 0) {
         _tradeInfoWrap.sd_layout

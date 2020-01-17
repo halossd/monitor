@@ -206,7 +206,7 @@
 - (CGSize)calHeightWith:(TradeInfoModel *)info {
     UIInterfaceOrientation status=[UIApplication sharedApplication].statusBarOrientation;
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        CGFloat height = 168 + 25 + 10 + 40;
+        CGFloat height = 153 + 25 + 10 + 40;
         height += info.orders.count * 21;
         CGFloat width = 0;
         if (status == UIInterfaceOrientationPortrait || status == UIInterfaceOrientationPortraitUpsideDown) {
@@ -217,7 +217,7 @@
         
         return CGSizeMake(width, height);
     }else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        CGFloat height = 208 + 33 + 10 + 40;
+        CGFloat height = 188 + 33 + 10 + 40;
         height += info.orders.count * 21;
         CGFloat w = 0;
         if (status == UIInterfaceOrientationPortrait || status == UIInterfaceOrientationPortraitUpsideDown) {
@@ -249,12 +249,11 @@
     if ([string isEqualToString:@""] || [string isKindOfClass:[NSNull class]]){
         return;
     }
-    //NSLog(@"Received string: %@", string);
+    NSLog(@"Received string: %@", string);
     
     NSArray  *strs = [string componentsSeparatedByString:@"}\n{"];
     
     if (!_canProcess) {
-        NSLog(@"cancel process");
         return;
     }
     
