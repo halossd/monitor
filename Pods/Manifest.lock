@@ -1,16 +1,40 @@
 PODS:
+  - IGListDiffKit (4.0.0)
+  - IGListKit (4.0.0):
+    - IGListDiffKit (= 4.0.0)
   - SDAutoLayout (2.2.1)
+  - SnapKit (4.2.0)
+  - SwifterSwift/Foundation (5.1.0)
+  - SwifterSwift/SwiftStdlib (5.1.0)
+  - SwifterSwift/UIKit (5.1.0)
+  - SwiftyJSON (5.0.0)
 
 DEPENDENCIES:
+  - IGListKit (~> 4.0.0)
   - SDAutoLayout
+  - SnapKit
+  - SwifterSwift/Foundation
+  - SwifterSwift/SwiftStdlib
+  - SwifterSwift/UIKit
+  - SwiftyJSON
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - IGListDiffKit
+    - IGListKit
     - SDAutoLayout
+    - SnapKit
+    - SwifterSwift
+    - SwiftyJSON
 
 SPEC CHECKSUMS:
+  IGListDiffKit: 665d6cf43ce726e676013db9c7d6c4294259b6b2
+  IGListKit: fd5a5d21935298f5849fa49d426843cff97b77c7
   SDAutoLayout: 8bf6b3bbc8b01f775d4defbb4fda2ace805461be
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 11624aef514a9d744db2bd5001c30c2d5659d4a3
+PODFILE CHECKSUM: 4916702bf0c0d27985bd5da65daf1b9f2df04c7e
 
 COCOAPODS: 1.6.1

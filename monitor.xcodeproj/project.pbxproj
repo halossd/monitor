@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		423B5E5E23D983C50017C55C /* OverseeInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B5E5D23D983C50017C55C /* OverseeInfoCell.swift */; };
+		423B5E6023D9840A0017C55C /* OverseeOrdersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B5E5F23D9840A0017C55C /* OverseeOrdersCell.swift */; };
+		423B5E6423D9B8DC0017C55C /* NSObject+ListDiffable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B5E6323D9B8DC0017C55C /* NSObject+ListDiffable.swift */; };
+		423B5E6623D9BA2D0017C55C /* MViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B5E6523D9BA2D0017C55C /* MViewController.swift */; };
+		423B5E6823D9BE9A0017C55C /* OverseeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B5E6723D9BE9A0017C55C /* OverseeModel.swift */; };
+		423B5E6A23D9C0CC0017C55C /* OverseeSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B5E6923D9C0CC0017C55C /* OverseeSectionController.swift */; };
 		428A33CB23D042BC001007BD /* OverseeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 428FE4ED22FBCA1E002C351F /* OverseeCell.m */; };
 		428A33CC23D042BF001007BD /* MOCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 429DD5872325F10B0033CA76 /* MOCollectionViewLayout.m */; };
 		42F0877B22F7D20C00B6BA95 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F0877A22F7D20C00B6BA95 /* AppDelegate.m */; };
@@ -17,8 +23,6 @@
 		42F0878922F7D20E00B6BA95 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F0878822F7D20E00B6BA95 /* main.m */; };
 		42F087A922FAA42A00B6BA95 /* LYTradeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F0879C22FAA42A00B6BA95 /* LYTradeInfo.m */; };
 		42F087AA22FAA42A00B6BA95 /* LYTradeInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F0879D22FAA42A00B6BA95 /* LYTradeInfoModel.m */; };
-		42F087AB22FAA42A00B6BA95 /* LYOverseeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F0879E22FAA42A00B6BA95 /* LYOverseeCell.m */; };
-		42F087AC22FAA42A00B6BA95 /* LYOverseeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F0879F22FAA42A00B6BA95 /* LYOverseeController.m */; };
 		42F087AD22FAA42A00B6BA95 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F087A322FAA42A00B6BA95 /* Reachability.m */; };
 		42F087AE22FAA42A00B6BA95 /* JFRSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F087A622FAA42A00B6BA95 /* JFRSecurity.m */; };
 		42F087AF22FAA42A00B6BA95 /* JFRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F087A822FAA42A00B6BA95 /* JFRWebSocket.m */; };
@@ -31,6 +35,13 @@
 /* Begin PBXFileReference section */
 		197725EE556973AEB4970BAD /* libPods-monitor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-monitor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		223EA767F55A49DD944F084C /* Pods-monitor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-monitor.release.xcconfig"; path = "Target Support Files/Pods-monitor/Pods-monitor.release.xcconfig"; sourceTree = "<group>"; };
+		423B5E5C23D983C50017C55C /* monitor-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "monitor-Bridging-Header.h"; sourceTree = "<group>"; };
+		423B5E5D23D983C50017C55C /* OverseeInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverseeInfoCell.swift; sourceTree = "<group>"; };
+		423B5E5F23D9840A0017C55C /* OverseeOrdersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverseeOrdersCell.swift; sourceTree = "<group>"; };
+		423B5E6323D9B8DC0017C55C /* NSObject+ListDiffable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+ListDiffable.swift"; sourceTree = "<group>"; };
+		423B5E6523D9BA2D0017C55C /* MViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MViewController.swift; sourceTree = "<group>"; };
+		423B5E6723D9BE9A0017C55C /* OverseeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverseeModel.swift; sourceTree = "<group>"; };
+		423B5E6923D9C0CC0017C55C /* OverseeSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverseeSectionController.swift; sourceTree = "<group>"; };
 		428FE4EC22FBCA1E002C351F /* OverseeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OverseeCell.h; sourceTree = "<group>"; };
 		428FE4ED22FBCA1E002C351F /* OverseeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OverseeCell.m; sourceTree = "<group>"; };
 		429DD5862325F10B0033CA76 /* MOCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOCollectionViewLayout.h; sourceTree = "<group>"; };
@@ -45,12 +56,8 @@
 		42F0878522F7D20E00B6BA95 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		42F0878722F7D20E00B6BA95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42F0878822F7D20E00B6BA95 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		42F0879A22FAA42A00B6BA95 /* LYOverseeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYOverseeCell.h; sourceTree = "<group>"; };
-		42F0879B22FAA42A00B6BA95 /* LYOverseeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYOverseeController.h; sourceTree = "<group>"; };
 		42F0879C22FAA42A00B6BA95 /* LYTradeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYTradeInfo.m; sourceTree = "<group>"; };
 		42F0879D22FAA42A00B6BA95 /* LYTradeInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYTradeInfoModel.m; sourceTree = "<group>"; };
-		42F0879E22FAA42A00B6BA95 /* LYOverseeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYOverseeCell.m; sourceTree = "<group>"; };
-		42F0879F22FAA42A00B6BA95 /* LYOverseeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYOverseeController.m; sourceTree = "<group>"; };
 		42F087A022FAA42A00B6BA95 /* LYTradeInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYTradeInfoModel.h; sourceTree = "<group>"; };
 		42F087A122FAA42A00B6BA95 /* LYTradeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYTradeInfo.h; sourceTree = "<group>"; };
 		42F087A322FAA42A00B6BA95 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
@@ -106,11 +113,13 @@
 				42F0877A22F7D20C00B6BA95 /* AppDelegate.m */,
 				42F0877C22F7D20C00B6BA95 /* ViewController.h */,
 				42F0877D22F7D20C00B6BA95 /* ViewController.m */,
+				423B5E6523D9BA2D0017C55C /* MViewController.swift */,
 				42F0877F22F7D20C00B6BA95 /* Main.storyboard */,
 				42F0878222F7D20E00B6BA95 /* Assets.xcassets */,
 				42F0878422F7D20E00B6BA95 /* LaunchScreen.storyboard */,
 				42F0878722F7D20E00B6BA95 /* Info.plist */,
 				42F0878822F7D20E00B6BA95 /* main.m */,
+				423B5E5C23D983C50017C55C /* monitor-Bridging-Header.h */,
 			);
 			path = monitor;
 			sourceTree = "<group>";
@@ -122,6 +131,11 @@
 				42F087A222FAA42A00B6BA95 /* JFRWebsocket */,
 				429DD5862325F10B0033CA76 /* MOCollectionViewLayout.h */,
 				429DD5872325F10B0033CA76 /* MOCollectionViewLayout.m */,
+				423B5E5D23D983C50017C55C /* OverseeInfoCell.swift */,
+				423B5E5F23D9840A0017C55C /* OverseeOrdersCell.swift */,
+				423B5E6323D9B8DC0017C55C /* NSObject+ListDiffable.swift */,
+				423B5E6723D9BE9A0017C55C /* OverseeModel.swift */,
+				423B5E6923D9C0CC0017C55C /* OverseeSectionController.swift */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -131,10 +145,6 @@
 			children = (
 				42F087B122FAA66500B6BA95 /* Helper.h */,
 				42F087B022FAA66500B6BA95 /* Helper.m */,
-				42F0879A22FAA42A00B6BA95 /* LYOverseeCell.h */,
-				42F0879E22FAA42A00B6BA95 /* LYOverseeCell.m */,
-				42F0879B22FAA42A00B6BA95 /* LYOverseeController.h */,
-				42F0879F22FAA42A00B6BA95 /* LYOverseeController.m */,
 				42F087A122FAA42A00B6BA95 /* LYTradeInfo.h */,
 				42F0879C22FAA42A00B6BA95 /* LYTradeInfo.m */,
 				42F087A022FAA42A00B6BA95 /* LYTradeInfoModel.h */,
@@ -211,6 +221,7 @@
 				TargetAttributes = {
 					42F0877522F7D20C00B6BA95 = {
 						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1030;
 					};
 				};
 			};
@@ -277,19 +288,23 @@
 			files = (
 				42F087AF22FAA42A00B6BA95 /* JFRWebSocket.m in Sources */,
 				42F087AA22FAA42A00B6BA95 /* LYTradeInfoModel.m in Sources */,
+				423B5E6423D9B8DC0017C55C /* NSObject+ListDiffable.swift in Sources */,
 				428A33CC23D042BF001007BD /* MOCollectionViewLayout.m in Sources */,
 				42F0877E22F7D20C00B6BA95 /* ViewController.m in Sources */,
 				42F087B922FAB17C00B6BA95 /* UIView+YY.m in Sources */,
 				428A33CB23D042BC001007BD /* OverseeCell.m in Sources */,
+				423B5E6623D9BA2D0017C55C /* MViewController.swift in Sources */,
 				42F087AD22FAA42A00B6BA95 /* Reachability.m in Sources */,
-				42F087AC22FAA42A00B6BA95 /* LYOverseeController.m in Sources */,
 				42F087A922FAA42A00B6BA95 /* LYTradeInfo.m in Sources */,
 				42F0878922F7D20E00B6BA95 /* main.m in Sources */,
-				42F087AB22FAA42A00B6BA95 /* LYOverseeCell.m in Sources */,
 				42F087B522FAAD6100B6BA95 /* TradeInfoModel.m in Sources */,
 				42F087B222FAA66500B6BA95 /* Helper.m in Sources */,
+				423B5E6A23D9C0CC0017C55C /* OverseeSectionController.swift in Sources */,
+				423B5E6023D9840A0017C55C /* OverseeOrdersCell.swift in Sources */,
 				42F0877B22F7D20C00B6BA95 /* AppDelegate.m in Sources */,
+				423B5E6823D9BE9A0017C55C /* OverseeModel.swift in Sources */,
 				42F087AE22FAA42A00B6BA95 /* JFRSecurity.m in Sources */,
+				423B5E5E23D983C50017C55C /* OverseeInfoCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,6 +447,7 @@
 			baseConfigurationReference = A86F61E4710BF5785DE1245D /* Pods-monitor.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = MZY843GH83;
 				INFOPLIST_FILE = monitor/Info.plist;
@@ -443,6 +459,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tianqu.monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = commen_dev;
+				SWIFT_OBJC_BRIDGING_HEADER = "monitor/monitor-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -452,6 +471,7 @@
 			baseConfigurationReference = 223EA767F55A49DD944F084C /* Pods-monitor.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = MZY843GH83;
 				INFOPLIST_FILE = monitor/Info.plist;
@@ -463,6 +483,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tianqu.monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = commen_dev;
+				SWIFT_OBJC_BRIDGING_HEADER = "monitor/monitor-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
