@@ -38,22 +38,24 @@ class MViewController: UIViewController {
         self.navigationItem.titleView = statusLabel
         navigationController?.navigationBar.barStyle = .black
         
+        let layout = ListCollectionViewLayout(stickyHeaders: false, topContentInset: 0, stretchToEdge: true)
         
-        collectionView = UICollectionView(frame: UIScreen.main.bounds, collectionViewLayout:ListCollectionViewLayout(stickyHeaders: false, topContentInset: 10, stretchToEdge: false))
-        
+        collectionView = UICollectionView(frame: UIScreen.main.bounds, collectionViewLayout: layout)
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.isDirectionalLockEnabled = true
         collectionView.backgroundColor = .black
         view.addSubview(collectionView)
         adapter.collectionView = collectionView
         adapter.dataSource = self
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-            self.websocket(JFRWebSocket(), didReceiveMessage: self.tests[0])
+            self.websocket(JFRWebSocket(), didReceiveMessage: self.tests[2])
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                 self.websocket(JFRWebSocket(), didReceiveMessage: self.tests[3])
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                    self.websocket(JFRWebSocket(), didReceiveMessage: self.tests[2])
+                    self.websocket(JFRWebSocket(), didReceiveMessage: self.tests[1])
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                        self.websocket(JFRWebSocket(), didReceiveMessage: self.tests[1])
+                        self.websocket(JFRWebSocket(), didReceiveMessage: self.tests[0])
                         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                             self.websocket(JFRWebSocket(), didReceiveMessage: self.tests[4])
                         }
@@ -101,7 +103,7 @@ extension MViewController: JFRWebSocketDelegate {
         if string == "" {
             return
         }
-        
+        print(string)
         let strs = string.nsString.components(separatedBy: "}\n{")
         
         if strs.count == 1 {
@@ -123,7 +125,7 @@ extension MViewController: JFRWebSocketDelegate {
     
     func processResponseString(str: String) {
         let om = OverseeModel(json: JSON(parseJSON: str))
-        print(str)
+        
         if datas.isEmpty {
             datas.append(om)
             if !accounts.contains(om.account) {
@@ -132,7 +134,6 @@ extension MViewController: JFRWebSocketDelegate {
             adapter.performUpdates(animated: false, completion: nil)
             
         } else {
-            
             for (idx, obj) in datas.enumerated() {
                 if accounts.contains(om.account) {
                     if obj.account == om.account {
@@ -146,7 +147,6 @@ extension MViewController: JFRWebSocketDelegate {
                 }
             }
         }
-        
     }
 }
 

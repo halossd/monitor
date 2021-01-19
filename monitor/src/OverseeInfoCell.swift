@@ -37,8 +37,8 @@ class OverseeInfoCell: UICollectionViewCell {
         if UIDevice.current.userInterfaceIdiom == .pad {
             bodyHeight = 20
         }
-        
-        return CGSize(width: SCREEN_WIDTH, height: (bodyHeight + 8) * 7 + 40 + 10)
+        let w = UIApplication.shared.statusBarOrientation == .portrait || UIApplication.shared.statusBarOrientation == .portraitUpsideDown ? SCREEN_WIDTH : 375
+        return CGSize(width: w, height: (bodyHeight + 8) * 7 + 40 + 10)
     }
 
     override init(frame: CGRect) {
@@ -249,5 +249,24 @@ class OverseeInfoCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension OverseeInfoCell: ListBindable {
+    
+    func bindViewModel(_ viewModel: Any) {
+        guard let data = viewModel as? OverseeModel else { return }
+        let profit = data.equity.double()! - data.balance.double()!
+        topLabel.text = String(format: "%.2f", profit)
+        topLabel.backgroundColor = profit > 0 ? kBlue : kRed
+        tPlatformLabel.text = data.company
+        vPlatformLabel.text = data.account
+        vIpLabel.text = data.host
+        vBalanceLabel.text = data.balance
+        vNetWorthLabel.text = data.equity
+        vPrepaymentsLabel.text = data.margin
+        vAvailablePrepaidLabel.text = data.freeMargin
+        vMarginRateLabel.text = data.marginLevel
+
     }
 }

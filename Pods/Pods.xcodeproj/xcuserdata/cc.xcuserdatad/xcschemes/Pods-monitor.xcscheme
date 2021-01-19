@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "930C16F633B3EF49B6A56BA7EE80AB15"
+               BlueprintIdentifier = "9F589CAFAA4272AC34AE4E8F84E59573"
                BuildableName = "libPods-monitor.a"
                BlueprintName = "Pods-monitor"
                ReferencedContainer = "container:Pods.xcodeproj">

@@ -13,6 +13,7 @@
 		423B5E6623D9BA2D0017C55C /* MViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B5E6523D9BA2D0017C55C /* MViewController.swift */; };
 		423B5E6823D9BE9A0017C55C /* OverseeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B5E6723D9BE9A0017C55C /* OverseeModel.swift */; };
 		423B5E6A23D9C0CC0017C55C /* OverseeSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B5E6923D9C0CC0017C55C /* OverseeSectionController.swift */; };
+		425EB82623F41CFC00A34A12 /* CustomGridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425EB82523F41CFC00A34A12 /* CustomGridLayout.swift */; };
 		428A33CB23D042BC001007BD /* OverseeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 428FE4ED22FBCA1E002C351F /* OverseeCell.m */; };
 		428A33CC23D042BF001007BD /* MOCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 429DD5872325F10B0033CA76 /* MOCollectionViewLayout.m */; };
 		42F0877B22F7D20C00B6BA95 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F0877A22F7D20C00B6BA95 /* AppDelegate.m */; };
@@ -42,10 +43,12 @@
 		423B5E6523D9BA2D0017C55C /* MViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MViewController.swift; sourceTree = "<group>"; };
 		423B5E6723D9BE9A0017C55C /* OverseeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverseeModel.swift; sourceTree = "<group>"; };
 		423B5E6923D9C0CC0017C55C /* OverseeSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverseeSectionController.swift; sourceTree = "<group>"; };
+		425EB82523F41CFC00A34A12 /* CustomGridLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGridLayout.swift; sourceTree = "<group>"; };
 		428FE4EC22FBCA1E002C351F /* OverseeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OverseeCell.h; sourceTree = "<group>"; };
 		428FE4ED22FBCA1E002C351F /* OverseeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OverseeCell.m; sourceTree = "<group>"; };
 		429DD5862325F10B0033CA76 /* MOCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOCollectionViewLayout.h; sourceTree = "<group>"; };
 		429DD5872325F10B0033CA76 /* MOCollectionViewLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOCollectionViewLayout.m; sourceTree = "<group>"; };
+		42BF49B025B29D5B007E39E3 /* monitorDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = monitorDebug.entitlements; sourceTree = "<group>"; };
 		42F0877622F7D20C00B6BA95 /* monitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = monitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42F0877922F7D20C00B6BA95 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		42F0877A22F7D20C00B6BA95 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -108,6 +111,7 @@
 		42F0877822F7D20C00B6BA95 /* monitor */ = {
 			isa = PBXGroup;
 			children = (
+				42BF49B025B29D5B007E39E3 /* monitorDebug.entitlements */,
 				42F0879822FAA42A00B6BA95 /* src */,
 				42F0877922F7D20C00B6BA95 /* AppDelegate.h */,
 				42F0877A22F7D20C00B6BA95 /* AppDelegate.m */,
@@ -136,6 +140,7 @@
 				423B5E6323D9B8DC0017C55C /* NSObject+ListDiffable.swift */,
 				423B5E6723D9BE9A0017C55C /* OverseeModel.swift */,
 				423B5E6923D9C0CC0017C55C /* OverseeSectionController.swift */,
+				425EB82523F41CFC00A34A12 /* CustomGridLayout.swift */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -302,6 +307,7 @@
 				423B5E6A23D9C0CC0017C55C /* OverseeSectionController.swift in Sources */,
 				423B5E6023D9840A0017C55C /* OverseeOrdersCell.swift in Sources */,
 				42F0877B22F7D20C00B6BA95 /* AppDelegate.m in Sources */,
+				425EB82623F41CFC00A34A12 /* CustomGridLayout.swift in Sources */,
 				423B5E6823D9BE9A0017C55C /* OverseeModel.swift in Sources */,
 				42F087AE22FAA42A00B6BA95 /* JFRSecurity.m in Sources */,
 				423B5E5E23D983C50017C55C /* OverseeInfoCell.swift in Sources */,
@@ -448,17 +454,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = monitor/monitorDebug.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = MZY843GH83;
+				DEVELOPMENT_TEAM = NGFH48M6BD;
 				INFOPLIST_FILE = monitor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tianqu.monitor;
+				MARKETING_VERSION = 1.0.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.monitor.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = commen_dev;
+				PROVISIONING_PROFILE_SPECIFIER = "Monitor-iOS";
 				SWIFT_OBJC_BRIDGING_HEADER = "monitor/monitor-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -472,17 +481,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = MZY843GH83;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NGFH48M6BD;
 				INFOPLIST_FILE = monitor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tianqu.monitor;
+				MARKETING_VERSION = 1.0.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.monitor.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = commen_dev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "monitor/monitor-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

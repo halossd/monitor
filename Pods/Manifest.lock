@@ -10,7 +10,7 @@ PODS:
   - SwiftyJSON (5.0.0)
 
 DEPENDENCIES:
-  - IGListKit (~> 4.0.0)
+  - IGListKit
   - SDAutoLayout
   - SnapKit
   - SwifterSwift/Foundation
@@ -19,7 +19,7 @@ DEPENDENCIES:
   - SwiftyJSON
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - IGListDiffKit
     - IGListKit
     - SDAutoLayout
@@ -35,6 +35,6 @@ SPEC CHECKSUMS:
   SwifterSwift: a9e8e144832638c2850b43da5feaf9598c6ad65b
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 4916702bf0c0d27985bd5da65daf1b9f2df04c7e
+PODFILE CHECKSUM: fa63cff83429cd01fcf677b9c871af7f8bed0367
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.8.4

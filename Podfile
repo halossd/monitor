@@ -4,7 +4,7 @@ platform :ios, '9.0'
 
 target 'monitor' do
  pod 'SDAutoLayout'
- pod 'IGListKit', '~> 4.0.0'
+ pod 'IGListKit'
  pod 'SnapKit'
  pod 'SwiftyJSON'
  pod 'SwifterSwift/UIKit'

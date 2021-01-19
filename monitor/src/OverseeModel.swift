@@ -18,7 +18,7 @@ final class OverseeModel: NSObject {
     let freeMargin: String
     let marginLevel: String
     let margin: String
-    let orders: [JSON]
+    let orders: [Order]
     
     init(json: JSON) {
         self.company = json["company"].string!
@@ -29,6 +29,25 @@ final class OverseeModel: NSObject {
         self.freeMargin = json["freeMargin"].string!
         self.marginLevel = json["marginLevel"].string!
         self.margin = json["margin"].string!
-        self.orders = json["orders"].array ?? []
+        let ods = json["orders"].array ?? []
+        var arr: [Order] = []
+        for order in ods {
+            arr.append(Order(json: order))
+        }
+        self.orders = arr
+    }
+}
+
+final class Order: NSObject {
+    let symbol: String
+    let type: String
+    let lots: String
+    let profit: String
+    
+    init(json: JSON) {
+        self.symbol = json["symbol"].string!
+        self.type = json["type"].string!
+        self.lots = json["lots"].string!
+        self.profit = json["profit"].string!
     }
 }

@@ -12,28 +12,10 @@ import SwiftyJSON
 class OverseeOrdersCell: UICollectionViewCell {
     let tTrade: UILabel = UILabel()
     let vTrade: UILabel = UILabel()
-    var data: JSON! {
-        didSet {
-            let str1 = data["symbol"].string! + " "
-            let str2 = data["type"].string! + " " + data["lots"].string!
-            let str3 = str1 + str2
-            
-            let attr = NSMutableAttributedString(string: str3)
-            let range = str3.nsString.range(of: str2)
-            var c = kRed
-            if data["type"].string! == "BUY" {
-                c = kBlue
-            }
-    
-            attr.addAttribute(.foregroundColor, value: c, range: range)
-            attr.addAttribute(.font, value: UIFont.systemFont(ofSize: 13, weight: .medium), range: range)
-            tTrade.attributedText = attr
-            vTrade.text = data["profit"].string!
-            vTrade.textColor = data["profit"].string!.nsString.compare("0", options: .numeric).rawValue == -1 ? kRed : kBlue
-        }
-    }
+
     static func cellSize() -> CGSize {
-        return CGSize(width: SCREEN_WIDTH, height: 21)
+        let w = UIApplication.shared.statusBarOrientation == .portrait || UIApplication.shared.statusBarOrientation == .portraitUpsideDown ? SCREEN_WIDTH : 375
+        return CGSize(width: w, height: 21)
     }
     
     override init(frame: CGRect) {
@@ -61,5 +43,29 @@ class OverseeOrdersCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension OverseeOrdersCell: ListBindable {
+    
+    func bindViewModel(_ viewModel: Any) {
+        guard let viewModel = viewModel as? Order else { return }
+        
+        let str1 = viewModel.symbol + " "
+        let str2 = viewModel.type + " " + viewModel.lots
+        let str3 = str1 + str2
+            
+        let attr = NSMutableAttributedString(string: str3)
+        let range = str3.nsString.range(of: str2)
+        var c = kRed
+        if viewModel.type == "BUY" {
+            c = kBlue
+        }
+
+        attr.addAttribute(.foregroundColor, value: c, range: range)
+        attr.addAttribute(.font, value: UIFont.systemFont(ofSize: 13, weight: .medium), range: range)
+        tTrade.attributedText = attr
+        vTrade.text = viewModel.profit
+        vTrade.textColor = viewModel.profit.nsString.compare("0", options: .numeric).rawValue == -1 ? kRed : kBlue
     }
 }

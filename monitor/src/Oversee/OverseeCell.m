@@ -58,12 +58,12 @@
             _w = WIN_WIDTH - 30;
             _bodyHeight = 15;
             bodyFont = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
-            hederFont = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+            hederFont = [UIFont systemFontOfSize:20 weight:UIFontWeightMedium];
         }else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             _w = 375 - 30;
             _bodyHeight = 20;
             bodyFont = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
-            hederFont = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+            hederFont = [UIFont systemFontOfSize:20 weight:UIFontWeightMedium];
         }
         self.contentView.layer.masksToBounds = YES;
         self.contentView.layer.cornerRadius = 10;
@@ -203,7 +203,7 @@
 - (void)setup
 {
     CGFloat left = 15;
-    CGFloat top = 8;
+    CGFloat top = 4;
     
     self.topLabel.sd_layout
     .leftSpaceToView(self.contentView, 0)
@@ -300,7 +300,7 @@
     
     self.tradeInfoWrap.sd_layout
     .leftSpaceToView(self.contentView, left)
-    .topSpaceToView(self.bottomLine, 12)
+    .topSpaceToView(self.bottomLine, 6)
     .widthIs(_w);
     
 }
@@ -327,11 +327,11 @@
         .heightIs(1);
     }else{
         _tradeInfoWrap.sd_layout
-        .heightIs(infos.count * 21);
+        .heightIs(infos.count * 17);
     }
     
     [infos enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        LYTradeInfo *view = [[LYTradeInfo alloc] initWithFrame:CGRectMake(0, 21 * idx, self.width - 30, 13) data:obj redColor:NO];
+        LYTradeInfo *view = [[LYTradeInfo alloc] initWithFrame:CGRectMake(0, 17 * idx, self.width - 30, 13) data:obj redColor:NO];
         [self.tradeInfoWrap addSubview:view];
     }];
 }

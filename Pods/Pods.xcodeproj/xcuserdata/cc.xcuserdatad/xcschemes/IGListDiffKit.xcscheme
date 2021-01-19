@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "32F195EF794A3A8B1EF7D0F34FE480D7"
+               BlueprintIdentifier = "2D07A05F514BF9C5434DAC907988C708"
                BuildableName = "libIGListDiffKit.a"
                BlueprintName = "IGListDiffKit"
                ReferencedContainer = "container:Pods.xcodeproj">
