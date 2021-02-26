@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "monitor-Swift.h"
+#import <Bugsnag/Bugsnag.h>
 
 @interface AppDelegate ()
 
@@ -24,7 +25,7 @@
 //    MViewController *vc = [[MViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     self.window.rootViewController = nav;
-    
+    [Bugsnag startSession];
     return YES;
 }
 

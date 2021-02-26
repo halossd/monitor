@@ -10,4 +10,5 @@ target 'monitor' do
  pod 'SwifterSwift/UIKit'
  pod 'SwifterSwift/SwiftStdlib'
  pod 'SwifterSwift/Foundation'
+ pod 'Bugsnag'
 end

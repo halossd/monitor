@@ -14,6 +14,8 @@
 #import "Helper.h"
 #import "MOCollectionViewLayout.h"
 
+#import <Bugsnag/Bugsnag.h>
+
 #define WIN_WIDTH  [[UIScreen mainScreen] bounds].size.width
 #define WIN_HEIGHT [[UIScreen mainScreen] bounds].size.height
 #define NOTIFICATION_WEBSOCKET_CONNECT @"NOTIFICATION_WEBSOCKET_CONNECT"
@@ -25,6 +27,7 @@
 @property (nonatomic, strong) NSMutableArray<TradeInfoModel *> *tbDatas;
 @property(nonatomic, strong) JFRWebSocket *socket;
 @property (nonatomic, copy) NSString *host;
+@property (nonatomic, strong) NSMutableArray<JFRWebSocket *> *sockets;
 
 //按账户分组
 @property (nonatomic, strong) NSMutableArray *ticksArray;
@@ -43,7 +46,6 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
 //    self.automaticallyAdjustsScrollViewInsets = NO;
     
-//    self.navigationItem.title = @"交易风控";
     _canProcess = true;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(saveCache)
@@ -55,15 +57,12 @@
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
     
-//    _topLeftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 120, 44)];
     _stautsLabel = [[UILabel alloc] init];
     _stautsLabel.textColor = UIColor.whiteColor;
     _stautsLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
     _stautsLabel.text = @"交易风控";
     self.navigationItem.titleView = _stautsLabel;
     [_stautsLabel sizeToFit];
-//    [_topLeftView addSubview:_stautsLabel];
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_topLeftView];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_setting"]
                                                                               style:UIBarButtonItemStylePlain
@@ -90,26 +89,29 @@
     _tbDatas = [[NSMutableArray alloc] init];
     _ticksArray = [[NSMutableArray alloc] init];
     _accountsArray = [[NSMutableArray alloc] init];
+    _sockets = [[NSMutableArray alloc] init];
     
     if ([Helper readCacheFile:@"status"] != nil) {
         NSArray *arr = [Helper readCacheFile:@"status"];
         self.accountsArray = [NSMutableArray arrayWithArray:arr];
     }
+//
+//    if ([Helper readCacheFile:@"ticks"] != nil) {
+//        NSArray *arr = [Helper readCacheFile:@"ticks"];
+//        self.ticksArray = [NSMutableArray arrayWithArray:arr];
+//        if ([arr count] > 0 ) {
+//            for (NSDictionary *dic in arr) {
+//                TradeInfoModel *tr = [TradeInfoModel new];
+//                [tr convert:dic];
+//                [_tbDatas addObject:tr];
+//                [_collectionView reloadData];
+//            }
+//        }
+//    }
     
-    if ([Helper readCacheFile:@"ticks"] != nil) {
-        NSArray *arr = [Helper readCacheFile:@"ticks"];
-        self.ticksArray = [NSMutableArray arrayWithArray:arr];
-        if ([arr count] > 0 ) {
-            for (NSDictionary *dic in arr) {
-                TradeInfoModel *tr = [TradeInfoModel new];
-                [tr convert:dic];
-                [_tbDatas addObject:tr];
-                [_collectionView reloadData];
-            }
-        }
+    if (![_host isEqualToString:@""]) {
+        [self initSocket];
     }
-    
-    [self initSocket];
 }
 
 - (void)setHosturl
@@ -120,6 +122,13 @@
     }];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *receiveStr = alert.textFields.firstObject.text;
+        self.host = receiveStr;
+        [[NSUserDefaults standardUserDefaults] setValue:receiveStr forKey:CURRENT_HOST];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [self initSocket];
+        /*
         NSString *url = alert.textFields.firstObject.text;
         NSString *placeHoldder = alert.textFields.firstObject.placeholder;
         if (![url containsString:@":"]) {
@@ -140,6 +149,7 @@
         [[NSUserDefaults standardUserDefaults] setValue:self.host forKey:CURRENT_HOST];
         [[NSUserDefaults standardUserDefaults] synchronize];
         [self initSocket];
+        */
 
     }]];
     [self.navigationController presentViewController:alert animated:YES completion:nil];
@@ -154,9 +164,21 @@
 
 - (void)initSocket
 {
-    self.socket = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/echo", _host]] protocols:nil];
-    self.socket.delegate = self;
-    [self.socket connect];
+    [self clearCacheData];
+    NSArray *hosts = [_host componentsSeparatedByString:@","];
+    for (__strong NSString *url in hosts) {
+        if (![url containsString:@":"]) {
+            url = [NSString stringWithFormat:@"%@:8089", url];
+        }
+        JFRWebSocket *s = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/echo", url]] protocols:nil];
+        s.delegate = self;
+        [s connect];
+        [_sockets addObject:s];
+    }
+
+//    self.socket = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/echo", _host]] protocols:nil];
+//    self.socket.delegate = self;
+//    [self.socket connect];
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -321,6 +343,11 @@
 
 - (void)clearCacheData
 {
+    for (__strong JFRWebSocket *s in _sockets) {
+        [s disconnect];
+        s = nil;
+        [_sockets removeObject:s];
+    }
     [_accountsArray removeAllObjects];
     [_ticksArray removeAllObjects];
     [_tbDatas removeAllObjects];

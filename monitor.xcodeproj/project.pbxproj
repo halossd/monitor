@@ -30,7 +30,6 @@
 		42F087B222FAA66500B6BA95 /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F087B022FAA66500B6BA95 /* Helper.m */; };
 		42F087B522FAAD6100B6BA95 /* TradeInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F087B422FAAD6100B6BA95 /* TradeInfoModel.m */; };
 		42F087B922FAB17C00B6BA95 /* UIView+YY.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F087B822FAB17C00B6BA95 /* UIView+YY.m */; };
-		5A9EED3B962ACF3D2D71BCD0 /* libPods-monitor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 197725EE556973AEB4970BAD /* libPods-monitor.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,7 +82,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A9EED3B962ACF3D2D71BCD0 /* libPods-monitor.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,6 +203,7 @@
 				42F0877222F7D20C00B6BA95 /* Sources */,
 				42F0877322F7D20C00B6BA95 /* Frameworks */,
 				42F0877422F7D20C00B6BA95 /* Resources */,
+				42F2B2F825CFDE8900C7BAB6 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -262,6 +261,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		42F2B2F825CFDE8900C7BAB6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /usr/bin/ruby;
+			shellScript = "fork do\n  Process.setsid\n  STDIN.reopen(\"/dev/null\")\n  STDOUT.reopen(\"/dev/null\", \"a\")\n  STDERR.reopen(\"/dev/null\", \"a\")\n\n  require 'shellwords'\n\n  Dir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/*/Contents/Resources/DWARF/*\"].each do |dsym|\n    system(\"curl --http1.1 -F apiKey=6c65063212ed95fdb5e5e18f99afc7d6 -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\n  end\nend\n";
+		};
 		E8BB13F61FB91177235C9D73 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
