@@ -21,7 +21,7 @@ class HostController: UITableViewController {
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         self.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .add, target: self, action: #selector(addHost))
-        self.navigationItem.backBarButtonItem?.tintColor = .white
+        self.navigationItem.rightBarButtonItem!.tintColor = .white
         
         let defaults = UserDefaults.standard
         let hosts = defaults.stringArray(forKey: "hosts")

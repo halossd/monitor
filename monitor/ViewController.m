@@ -63,6 +63,13 @@
     self.navigationItem.titleView = _stautsLabel;
     [_stautsLabel sizeToFit];
     
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_back_white"]
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:self
+                                                                action:@selector(handleBackAction:)];
+    self.navigationItem.leftBarButtonItem = backItem;
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
+    
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_setting"]
 //                                                                              style:UIBarButtonItemStylePlain
 //                                                                             target:self
@@ -70,8 +77,6 @@
 //
 //    self.navigationItem.rightBarButtonItem.tintColor = UIColor.whiteColor;
     
-    
-    _host = [[NSUserDefaults standardUserDefaults] stringForKey:CURRENT_HOST];
     
     MOCollectionViewLayout *layout = [[MOCollectionViewLayout alloc] init];
     layout.delegate = self;
@@ -113,6 +118,15 @@
     }
 }
 
+- (void)handleBackAction:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [self saveCache];
+}
+
 - (void)setHosturl
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请输入地址" message:@"" preferredStyle:UIAlertControllerStyleAlert];
@@ -152,9 +166,16 @@
     [self.navigationController presentViewController:alert animated:YES completion:nil];
 }
 
+- (void)resetSocket{
+    _socket.delegate = nil;
+    [_socket disconnect];
+    _socket = nil;
+    [self initSocket];
+}
+
 - (void)initSocket
 {
-    [self clearCacheData];
+//    [self clearCacheData];
 
     self.socket = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"ws://%@:8089/echo", _host]] protocols:nil];
     self.socket.delegate = self;
@@ -243,6 +264,7 @@
     NSLog(@"websocket is disconnected: %@", [error localizedDescription]);
 //    [self.socket connect];
 //    _stautsLabel.text = @"已断开";
+    [self resetSocket];
     _stautsLabel.textColor = UIColor.grayColor;
 }
 
