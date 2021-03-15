@@ -10,6 +10,7 @@
 
 @interface ViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource>
 
+@property (nonatomic, copy) NSString *host;
 
 @end
 

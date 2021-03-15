@@ -21,11 +21,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [self.window makeKeyAndVisible];
-    ViewController *vc = [[ViewController alloc] init];
+//    ViewController *vc = [[ViewController alloc] init];
 //    MViewController *vc = [[MViewController alloc] init];
+    HostController *vc = [[HostController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     self.window.rootViewController = nav;
-    [Bugsnag startSession];
+    [Bugsnag startBugsnagWithApiKey:@"6c65063212ed95fdb5e5e18f99afc7d6"];
+//    [Bugsnag notifyError:[NSError errorWithDomain:@"com.example" code:408 userInfo:nil]];
     return YES;
 }
 

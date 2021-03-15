@@ -26,7 +26,6 @@
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray<TradeInfoModel *> *tbDatas;
 @property(nonatomic, strong) JFRWebSocket *socket;
-@property (nonatomic, copy) NSString *host;
 @property (nonatomic, strong) NSMutableArray<JFRWebSocket *> *sockets;
 
 //按账户分组
@@ -60,16 +59,16 @@
     _stautsLabel = [[UILabel alloc] init];
     _stautsLabel.textColor = UIColor.whiteColor;
     _stautsLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
-    _stautsLabel.text = @"交易风控";
+    _stautsLabel.text = _host;
     self.navigationItem.titleView = _stautsLabel;
     [_stautsLabel sizeToFit];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_setting"]
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:self
-                                                                             action:@selector(setHosturl)];
-    
-    self.navigationItem.rightBarButtonItem.tintColor = UIColor.whiteColor;
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_setting"]
+//                                                                              style:UIBarButtonItemStylePlain
+//                                                                             target:self
+//                                                                             action:@selector(setHosturl)];
+//
+//    self.navigationItem.rightBarButtonItem.tintColor = UIColor.whiteColor;
     
     
     _host = [[NSUserDefaults standardUserDefaults] stringForKey:CURRENT_HOST];
@@ -91,23 +90,23 @@
     _accountsArray = [[NSMutableArray alloc] init];
     _sockets = [[NSMutableArray alloc] init];
     
-    if ([Helper readCacheFile:@"status"] != nil) {
-        NSArray *arr = [Helper readCacheFile:@"status"];
+    if ([Helper readCacheFile:[NSString stringWithFormat:@"%@_status", _host]] != nil) {
+        NSArray *arr = [Helper readCacheFile:[NSString stringWithFormat:@"%@_status", _host]];
         self.accountsArray = [NSMutableArray arrayWithArray:arr];
     }
-//
-//    if ([Helper readCacheFile:@"ticks"] != nil) {
-//        NSArray *arr = [Helper readCacheFile:@"ticks"];
-//        self.ticksArray = [NSMutableArray arrayWithArray:arr];
-//        if ([arr count] > 0 ) {
-//            for (NSDictionary *dic in arr) {
-//                TradeInfoModel *tr = [TradeInfoModel new];
-//                [tr convert:dic];
-//                [_tbDatas addObject:tr];
-//                [_collectionView reloadData];
-//            }
-//        }
-//    }
+
+    if ([Helper readCacheFile:[NSString stringWithFormat:@"%@_ticks", _host]] != nil) {
+        NSArray *arr = [Helper readCacheFile:[NSString stringWithFormat:@"%@_ticks", _host]];
+        self.ticksArray = [NSMutableArray arrayWithArray:arr];
+        if ([arr count] > 0 ) {
+            for (NSDictionary *dic in arr) {
+                TradeInfoModel *tr = [TradeInfoModel new];
+                [tr convert:dic];
+                [_tbDatas addObject:tr];
+                [_collectionView reloadData];
+            }
+        }
+    }
     
     if (![_host isEqualToString:@""]) {
         [self initSocket];
@@ -122,13 +121,6 @@
     }];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSString *receiveStr = alert.textFields.firstObject.text;
-        self.host = receiveStr;
-        [[NSUserDefaults standardUserDefaults] setValue:receiveStr forKey:CURRENT_HOST];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        [self initSocket];
-        /*
         NSString *url = alert.textFields.firstObject.text;
         NSString *placeHoldder = alert.textFields.firstObject.placeholder;
         if (![url containsString:@":"]) {
@@ -138,7 +130,6 @@
         url = [url stringByReplacingOccurrencesOfString:@"：" withString:@":"];
         
         [self clearCacheData];
-        [self.socket disconnect];
         
         if ([url isEqualToString:@""]) {
             self.host = placeHoldder;
@@ -149,7 +140,6 @@
         [[NSUserDefaults standardUserDefaults] setValue:self.host forKey:CURRENT_HOST];
         [[NSUserDefaults standardUserDefaults] synchronize];
         [self initSocket];
-        */
 
     }]];
     [self.navigationController presentViewController:alert animated:YES completion:nil];
@@ -165,20 +155,10 @@
 - (void)initSocket
 {
     [self clearCacheData];
-    NSArray *hosts = [_host componentsSeparatedByString:@","];
-    for (__strong NSString *url in hosts) {
-        if (![url containsString:@":"]) {
-            url = [NSString stringWithFormat:@"%@:8089", url];
-        }
-        JFRWebSocket *s = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/echo", url]] protocols:nil];
-        s.delegate = self;
-        [s connect];
-        [_sockets addObject:s];
-    }
 
-//    self.socket = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/echo", _host]] protocols:nil];
-//    self.socket.delegate = self;
-//    [self.socket connect];
+    self.socket = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"ws://%@:8089/echo", _host]] protocols:nil];
+    self.socket.delegate = self;
+    [self.socket connect];
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -310,7 +290,8 @@
     NSString *account = d.account;
     
     if (_tbDatas && _tbDatas.count > 0) {
-        [_tbDatas enumerateObjectsUsingBlock:^(TradeInfoModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSArray *dddd = [NSArray arrayWithArray:_tbDatas];
+        [dddd enumerateObjectsUsingBlock:^(TradeInfoModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if ([self.accountsArray indexOfObject:account] != NSNotFound) {
                 if ([account isEqualToString: obj.account]) {
                     [self.tbDatas replaceObjectAtIndex:idx withObject:d];
@@ -343,17 +324,15 @@
 
 - (void)clearCacheData
 {
-    for (__strong JFRWebSocket *s in _sockets) {
-        [s disconnect];
-        s = nil;
-        [_sockets removeObject:s];
-    }
+    _socket.delegate = nil;
+    [_socket disconnect];
+    _socket = nil;
     [_accountsArray removeAllObjects];
     [_ticksArray removeAllObjects];
     [_tbDatas removeAllObjects];
     [_collectionView reloadData];
-    [Helper removeCacheFile:@"ticks"];
-    [Helper removeCacheFile:@"status"];
+    [Helper removeCacheFile:[NSString stringWithFormat:@"%@_ticks", _host]];
+    [Helper removeCacheFile:[NSString stringWithFormat:@"%@_status", _host]];
 }
 
 - (void)saveCache
@@ -362,8 +341,8 @@
         return;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-        [Helper createCacheFile:@"status" withData:self.accountsArray];
-        [Helper createCacheFile:@"ticks" withData:self.ticksArray];
+        [Helper createCacheFile:[NSString stringWithFormat:@"%@_status", self.host] withData:self.accountsArray];
+        [Helper createCacheFile:[NSString stringWithFormat:@"%@_ticks", self.host] withData:self.ticksArray];
         NSLog(@"%@", self.ticksArray);
     });
     

@@ -8,3 +8,4 @@
 #import "JFRSecurity.h"
 #import "Helper.h"
 #import "MOCollectionViewLayout.h"
+#import "ViewController.h"

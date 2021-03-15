@@ -14,6 +14,8 @@
 		423B5E6823D9BE9A0017C55C /* OverseeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B5E6723D9BE9A0017C55C /* OverseeModel.swift */; };
 		423B5E6A23D9C0CC0017C55C /* OverseeSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B5E6923D9C0CC0017C55C /* OverseeSectionController.swift */; };
 		425EB82623F41CFC00A34A12 /* CustomGridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425EB82523F41CFC00A34A12 /* CustomGridLayout.swift */; };
+		42776A8125F8BBDE00F4C51F /* HostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42776A8025F8BBDE00F4C51F /* HostController.swift */; };
+		42776A8425F8BCC100F4C51F /* HostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42776A8325F8BCC100F4C51F /* HostCell.swift */; };
 		428A33CB23D042BC001007BD /* OverseeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 428FE4ED22FBCA1E002C351F /* OverseeCell.m */; };
 		428A33CC23D042BF001007BD /* MOCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 429DD5872325F10B0033CA76 /* MOCollectionViewLayout.m */; };
 		42F0877B22F7D20C00B6BA95 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F0877A22F7D20C00B6BA95 /* AppDelegate.m */; };
@@ -43,6 +45,8 @@
 		423B5E6723D9BE9A0017C55C /* OverseeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverseeModel.swift; sourceTree = "<group>"; };
 		423B5E6923D9C0CC0017C55C /* OverseeSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverseeSectionController.swift; sourceTree = "<group>"; };
 		425EB82523F41CFC00A34A12 /* CustomGridLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGridLayout.swift; sourceTree = "<group>"; };
+		42776A8025F8BBDE00F4C51F /* HostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostController.swift; sourceTree = "<group>"; };
+		42776A8325F8BCC100F4C51F /* HostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostCell.swift; sourceTree = "<group>"; };
 		428FE4EC22FBCA1E002C351F /* OverseeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OverseeCell.h; sourceTree = "<group>"; };
 		428FE4ED22FBCA1E002C351F /* OverseeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OverseeCell.m; sourceTree = "<group>"; };
 		429DD5862325F10B0033CA76 /* MOCollectionViewLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOCollectionViewLayout.h; sourceTree = "<group>"; };
@@ -139,6 +143,8 @@
 				423B5E6723D9BE9A0017C55C /* OverseeModel.swift */,
 				423B5E6923D9C0CC0017C55C /* OverseeSectionController.swift */,
 				425EB82523F41CFC00A34A12 /* CustomGridLayout.swift */,
+				42776A8025F8BBDE00F4C51F /* HostController.swift */,
+				42776A8325F8BCC100F4C51F /* HostCell.swift */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -325,8 +331,10 @@
 				42F0877B22F7D20C00B6BA95 /* AppDelegate.m in Sources */,
 				425EB82623F41CFC00A34A12 /* CustomGridLayout.swift in Sources */,
 				423B5E6823D9BE9A0017C55C /* OverseeModel.swift in Sources */,
+				42776A8125F8BBDE00F4C51F /* HostController.swift in Sources */,
 				42F087AE22FAA42A00B6BA95 /* JFRSecurity.m in Sources */,
 				423B5E5E23D983C50017C55C /* OverseeInfoCell.swift in Sources */,
+				42776A8425F8BCC100F4C51F /* HostCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
