@@ -34,6 +34,7 @@ class HostController: UITableViewController {
         
         tableView.separatorStyle = .none
         tableView.register(HostCell.self, forCellReuseIdentifier: HostCell.reuseIdentifier)
+        tableView.rowHeight = 50
         tableView.reloadData()
     
         // Uncomment the following line to preserve selection between presentations
@@ -54,6 +55,7 @@ class HostController: UITableViewController {
             self.datas.append(str!)
             UserDefaults.standard.setValue(self.datas, forKey: "hosts")
             UserDefaults.standard.synchronize()
+            self.tableView.reloadData()
         }
         alert.show()
     }
@@ -73,7 +75,7 @@ class HostController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: HostCell.reuseIdentifier, for: indexPath) as! HostCell
         cell.ipLabel.text = datas[indexPath.row]
-
+        cell.selectionStyle = .none
         return cell
     }
     
@@ -84,25 +86,30 @@ class HostController: UITableViewController {
         navigationController?.pushViewController(vc)
     }
 
-    /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "删除"
+    }
 
-    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        // Delete the row from the data source
+        Helper.removeCacheFile(datas[indexPath.row] + "_ticks")
+        Helper.removeCacheFile(datas[indexPath.row] + "_status")
+        datas.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
+        UserDefaults.standard.setValue(self.datas, forKey: "hosts")
+        UserDefaults.standard.synchronize()
     }
-    */
 
     /*
     // Override to support rearranging the table view.

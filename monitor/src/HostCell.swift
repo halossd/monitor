@@ -29,7 +29,7 @@ class HostCell: UITableViewCell {
         }
         
         let bottomLine = UIView()
-        bottomLine.backgroundColor = .lightGray
+        bottomLine.backgroundColor = UIColor(red: 66, green: 66, blue: 66)
         contentView.addSubview(bottomLine)
         
         bottomLine.snp_makeConstraints { (make) in

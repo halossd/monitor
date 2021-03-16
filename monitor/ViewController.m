@@ -35,6 +35,7 @@
 @property (nonatomic, strong) UILabel *stautsLabel;
 @property (nonatomic, strong) UIView *topLeftView;
 @property (nonatomic) __block BOOL canProcess;
+@property (nonatomic) BOOL shouldReConnect;
 @end
 
 @implementation ViewController
@@ -46,6 +47,7 @@
 //    self.automaticallyAdjustsScrollViewInsets = NO;
     
     _canProcess = true;
+    _shouldReConnect = true;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(saveCache)
                                                  name:UIApplicationDidEnterBackgroundNotification
@@ -125,6 +127,7 @@
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
     [self saveCache];
+    _shouldReConnect = false;
 }
 
 - (void)setHosturl
@@ -264,7 +267,7 @@
     NSLog(@"websocket is disconnected: %@", [error localizedDescription]);
 //    [self.socket connect];
 //    _stautsLabel.text = @"已断开";
-    [self resetSocket];
+    if (_shouldReConnect) [self resetSocket];
     _stautsLabel.textColor = UIColor.grayColor;
 }
 
@@ -359,7 +362,7 @@
 
 - (void)saveCache
 {
-    if (_tbDatas == nil) {
+    if (_tbDatas == nil || _tbDatas.count == 0) {
         return;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
