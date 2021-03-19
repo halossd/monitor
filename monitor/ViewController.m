@@ -21,12 +21,14 @@
 #define NOTIFICATION_WEBSOCKET_CONNECT @"NOTIFICATION_WEBSOCKET_CONNECT"
 #define CURRENT_HOST @"current_host"
 
-@interface ViewController ()<JFRWebSocketDelegate, MOCollectionViewLayoutDelegate, UICollectionViewDelegateFlowLayout>
+@interface ViewController ()<JFRWebSocketDelegate, MOCollectionViewLayoutDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray<TradeInfoModel *> *tbDatas;
 @property(nonatomic, strong) JFRWebSocket *socket;
 @property (nonatomic, strong) NSMutableArray<JFRWebSocket *> *sockets;
+
+@property (nonatomic, assign) int retryCount;
 
 //按账户分组
 @property (nonatomic, strong) NSMutableArray *ticksArray;
@@ -46,6 +48,7 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
 //    self.automaticallyAdjustsScrollViewInsets = NO;
     
+    _retryCount = 0;
     _canProcess = true;
     _shouldReConnect = true;
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -59,7 +62,7 @@
                                                object:nil];
     
     _stautsLabel = [[UILabel alloc] init];
-    _stautsLabel.textColor = UIColor.whiteColor;
+    _stautsLabel.textColor = UIColor.grayColor;
     _stautsLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
     _stautsLabel.text = _host;
     self.navigationItem.titleView = _stautsLabel;
@@ -118,6 +121,13 @@
     if (![_host isEqualToString:@""]) {
         [self initSocket];
     }
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if (self.navigationController.viewControllers.count <= 1) {
+        return NO;
+    }
+    return YES;
 }
 
 - (void)handleBackAction:(id)sender {
@@ -180,6 +190,7 @@
 {
 //    [self clearCacheData];
 
+    _retryCount += 1;
     self.socket = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"ws://%@:8089/echo", _host]] protocols:nil];
     self.socket.delegate = self;
     [self.socket connect];
@@ -267,7 +278,9 @@
     NSLog(@"websocket is disconnected: %@", [error localizedDescription]);
 //    [self.socket connect];
 //    _stautsLabel.text = @"已断开";
-    if (_shouldReConnect) [self resetSocket];
+    if (_retryCount <= 3) {
+        if (_shouldReConnect) [self resetSocket];
+    }
     _stautsLabel.textColor = UIColor.grayColor;
 }
 
@@ -319,6 +332,10 @@
         [dddd enumerateObjectsUsingBlock:^(TradeInfoModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if ([self.accountsArray indexOfObject:account] != NSNotFound) {
                 if ([account isEqualToString: obj.account]) {
+                    if (self.tbDatas.count == 0) {
+                        [Bugsnag notifyError:[NSError errorWithDomain:@"数组越界" code:401 userInfo:nil]];
+                        return;
+                    }
                     [self.tbDatas replaceObjectAtIndex:idx withObject:d];
                     [self.ticksArray replaceObjectAtIndex:idx withObject:dic];
                     NSIndexPath *idp = [NSIndexPath indexPathForRow:idx inSection:0];
