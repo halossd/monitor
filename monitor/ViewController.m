@@ -21,7 +21,7 @@
 #define NOTIFICATION_WEBSOCKET_CONNECT @"NOTIFICATION_WEBSOCKET_CONNECT"
 #define CURRENT_HOST @"current_host"
 
-@interface ViewController ()<JFRWebSocketDelegate, MOCollectionViewLayoutDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
+@interface ViewController ()<JFRWebSocketDelegate, MOCollectionViewLayoutDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray<TradeInfoModel *> *tbDatas;
@@ -46,6 +46,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
 //    self.automaticallyAdjustsScrollViewInsets = NO;
     
     _retryCount = 0;
@@ -121,13 +122,6 @@
     if (![_host isEqualToString:@""]) {
         [self initSocket];
     }
-}
-
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    if (self.navigationController.viewControllers.count <= 1) {
-        return NO;
-    }
-    return YES;
 }
 
 - (void)handleBackAction:(id)sender {
