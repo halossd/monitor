@@ -29,6 +29,8 @@
 @property (nonatomic, strong) NSMutableArray<JFRWebSocket *> *sockets;
 
 @property (nonatomic, assign) int retryCount;
+@property (nonatomic, assign) BOOL isConnected;
+@property (nonatomic, strong) NSTimer *heartBeatTimer;
 
 //按账户分组
 @property (nonatomic, strong) NSMutableArray *ticksArray;
@@ -124,6 +126,32 @@
     }
 }
 
+- (void)setIsConnected:(BOOL)isConnected {
+    _isConnected = isConnected;
+    if (_isConnected) {
+        if (!_heartBeatTimer) {
+            _heartBeatTimer = [NSTimer timerWithTimeInterval:30 target:self selector:@selector(webSocketHeartBeat) userInfo:nil repeats:YES];
+            [[NSRunLoop mainRunLoop] addTimer:_heartBeatTimer forMode:NSRunLoopCommonModes];
+        }
+    } else {
+        [self resetSocket];
+        sleep(1);
+        [self initSocket];
+    }
+}
+
+- (void)webSocketHeartBeat {
+    [_socket writePing:[@"mobile client" dataUsingEncoding:NSUTF8StringEncoding]];
+}
+
+- (void)resetSocket {
+    _socket.delegate = nil;
+    [_socket disconnect];
+    _socket = nil;
+    [_heartBeatTimer invalidate];
+    _heartBeatTimer = nil;
+}
+
 - (void)handleBackAction:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -132,6 +160,7 @@
     [super viewDidDisappear:animated];
     [self saveCache];
     _shouldReConnect = false;
+    [self resetSocket];
 }
 
 - (void)setHosturl
@@ -173,18 +202,8 @@
     [self.navigationController presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)resetSocket{
-    _socket.delegate = nil;
-    [_socket disconnect];
-    _socket = nil;
-    [self initSocket];
-}
-
 - (void)initSocket
 {
-//    [self clearCacheData];
-
-    _retryCount += 1;
     self.socket = [[JFRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"ws://%@:8089/echo", _host]] protocols:nil];
     self.socket.delegate = self;
     [self.socket connect];
@@ -266,15 +285,12 @@
     NSLog(@"websocket is connected");
 //    _stautsLabel.text = @"已连接";
     _stautsLabel.textColor = UIColor.whiteColor;
+    self.isConnected = YES;
 }
 
 - (void)websocketDidDisconnect:(JFRWebSocket*)socket error:(NSError*)error {
     NSLog(@"websocket is disconnected: %@", [error localizedDescription]);
-//    [self.socket connect];
-//    _stautsLabel.text = @"已断开";
-    if (_retryCount <= 3) {
-        if (_shouldReConnect) [self resetSocket];
-    }
+    self.isConnected = NO;
     _stautsLabel.textColor = UIColor.grayColor;
 }
 
