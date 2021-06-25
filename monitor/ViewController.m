@@ -342,8 +342,8 @@
         [dddd enumerateObjectsUsingBlock:^(TradeInfoModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if ([self.accountsArray indexOfObject:account] != NSNotFound) {
                 if ([account isEqualToString: obj.account]) {
-                    if (self.tbDatas.count == 0) {
-                        [Bugsnag notifyError:[NSError errorWithDomain:@"数组越界" code:401 userInfo:nil]];
+                    if (self.tbDatas.count == 0 || self.ticksArray.count == 0) {
+                        //[Bugsnag notifyError:[NSError errorWithDomain:@"数组越界" code:401 userInfo:nil]];
                         return;
                     }
                     [self.tbDatas replaceObjectAtIndex:idx withObject:d];
@@ -368,8 +368,8 @@
         [_tbDatas addObject:d];
         if ([_accountsArray indexOfObject:d.account] == NSNotFound) {
             [_accountsArray addObject:d.account];
-            [_ticksArray addObject:dic];
         }
+        [_ticksArray addObject:dic];
         [_collectionView reloadData];
     }
 }
